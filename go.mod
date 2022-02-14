@@ -1,4 +1,4 @@
-module github.com/boris-on/game-of-live-backend
+module github.com/boris-on/game-of-life-backend
 
 go 1.17
 

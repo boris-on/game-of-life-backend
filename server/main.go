@@ -4,7 +4,7 @@ import (
 	"image/color"
 	"os"
 
-	"github.com/boris-on/game-of-live-backend/game"
+	"github.com/boris-on/game-of-life-backend/game"
 	"github.com/gin-gonic/gin"
 )
 

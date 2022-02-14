@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/boris-on/game-of-live-backend/game"
+	"github.com/boris-on/game-of-life-backend/game"
 
 	"nhooyr.io/websocket"
 	"nhooyr.io/websocket/wsjson"
