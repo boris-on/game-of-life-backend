@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/boris-on/game-of-life-backend/game"
+	"github.com/boris-on/game-of-life-backend/server"
 	"github.com/gin-gonic/gin"
 )
 
@@ -27,12 +28,12 @@ func main() {
 		world.Area[i] = make([]int, 250)
 	}
 
-	hub := newHub()
-	go hub.run()
+	hub := server.NewHub()
+	go hub.Run()
 	r := gin.New()
-	r.GET("/ws", func(hub *Hub, world *game.World) gin.HandlerFunc {
+	r.GET("/ws", func(hub *server.Hub, world *game.World) gin.HandlerFunc {
 		return gin.HandlerFunc(func(c *gin.Context) {
-			serveWs(hub, world, c.Writer, c.Request)
+			server.ServeWs(hub, world, c.Writer, c.Request)
 		})
 	}(hub, world))
 	port := os.Getenv("PORT")

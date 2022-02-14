@@ -106,7 +106,7 @@ func (c *Client) writePump() {
 
 }
 
-func serveWs(hub *Hub, world *game.World, w http.ResponseWriter, r *http.Request) {
+func ServeWs(hub *Hub, world *game.World, w http.ResponseWriter, r *http.Request) {
 	conn, err := websocket.Accept(w, r, &websocket.AcceptOptions{
 		InsecureSkipVerify: true,
 	})
