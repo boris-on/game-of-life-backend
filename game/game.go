@@ -58,11 +58,16 @@ type EventConfirmUpdate struct {
 	Area [][]int `json:"area"`
 }
 
+type EventDisconnect struct {
+	ID int `json:"id"`
+}
+
 const EventTypeConnect = "connect"
 const EventTypeFillCell = "fill"
 const EventTypeInit = "init"
 const EventTypeUpdateCells = "update"
 const EventTypeConfirmUpdate = "confirm"
+const EventTypeDisconnect = "disconnect"
 
 func nTrue(val ...int) (int, int) {
 	sum := 0
@@ -140,6 +145,27 @@ func (world *World) HandleEvent(event *Event) {
 		json.Unmarshal(str, &ev)
 
 		world.Units[ev.ID] = &ev.Unit
+
+	case EventTypeDisconnect:
+		str, _ := json.Marshal(event.Data)
+		var ev EventConnect
+		json.Unmarshal(str, &ev)
+
+		delete(world.Units, ev.ID)
+		for clr := range world.Colors {
+			if world.Colors[clr] == ev.ID {
+				world.Colors[clr] = 0
+				break
+			}
+		}
+
+		for i := range world.Area {
+			for j := range world.Area[i] {
+				if world.Area[i][j] == ev.ID {
+					world.Area[i][j] = 0
+				}
+			}
+		}
 
 	case EventTypeFillCell:
 		str, _ := json.Marshal(event.Data)
