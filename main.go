@@ -38,7 +38,7 @@ func main() {
 	}(hub, world))
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = ":3000"
+		port = "3000"
 	}
-	r.Run(port)
+	r.Run(":" + port)
 }
