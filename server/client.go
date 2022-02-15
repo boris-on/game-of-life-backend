@@ -110,12 +110,13 @@ func ServeWs(hub *Hub, world *game.World, w http.ResponseWriter, r *http.Request
 	conn, err := websocket.Accept(w, r, &websocket.AcceptOptions{
 		InsecureSkipVerify: true,
 	})
-	fmt.Println("established")
-	conn.SetReadLimit(524288000)
+
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
+
+	conn.SetReadLimit(524288000)
 
 	client := &Client{
 		hub:  hub,
@@ -128,7 +129,7 @@ func ServeWs(hub *Hub, world *game.World, w http.ResponseWriter, r *http.Request
 	unit := world.AddUnit()
 
 	ctx := context.Background()
-	wsjson.Write(ctx, conn, game.Event{
+	err = wsjson.Write(ctx, conn, game.Event{
 		Type: game.EventTypeInit,
 		Data: game.EventInit{
 			ID:    unit.ID,
@@ -136,13 +137,18 @@ func ServeWs(hub *Hub, world *game.World, w http.ResponseWriter, r *http.Request
 			Area:  world.Area,
 		},
 	})
-
-	msg, _ := json.Marshal(game.Event{
+	if err != nil {
+		fmt.Println(err)
+	}
+	msg, err := json.Marshal(game.Event{
 		Type: game.EventTypeConnect,
 		Data: game.EventConnect{
 			Unit: *unit,
 		},
 	})
+	if err != nil {
+		fmt.Println(err)
+	}
 	hub.broadcast <- msg
 
 	go client.writePump()
