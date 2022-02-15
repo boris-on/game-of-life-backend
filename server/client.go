@@ -111,7 +111,7 @@ func ServeWs(hub *Hub, world *game.World, w http.ResponseWriter, r *http.Request
 		InsecureSkipVerify: true,
 	})
 	fmt.Println("established")
-	conn.SetReadLimit(5242880)
+	conn.SetReadLimit(524288000)
 	if err != nil {
 		fmt.Println(err)
 		return
