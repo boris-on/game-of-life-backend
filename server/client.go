@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	pongWait = 120 * time.Second
+	pongWait = 15 * time.Second
 
 	pingPeriod = (pongWait * 9) / 10
 
@@ -34,12 +34,34 @@ type Client struct {
 	conn *websocket.Conn
 
 	send chan []byte
+
+	id int
 }
 
 func (c *Client) readPump(world *game.World) {
 	defer func() {
+		fmt.Println("deleting", c.id)
+		msg, err := json.Marshal(game.Event{
+			Type: game.EventTypeDisconnect,
+			Data: game.EventDisconnect{
+				ID: c.id,
+			},
+		})
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		world.HandleEvent(&game.Event{
+			Type: game.EventTypeDisconnect,
+			Data: game.EventDisconnect{
+				ID: c.id,
+			},
+		})
+		fmt.Println(c.hub.clients)
+		c.hub.broadcast <- msg
 		c.hub.unregister <- c
 		c.conn.Close(websocket.StatusNormalClosure, "")
+		fmt.Println(c.hub.clients)
 	}()
 
 	c.conn.SetReadLimit(maxMessageSize)
@@ -117,16 +139,15 @@ func ServeWs(hub *Hub, world *game.World, w http.ResponseWriter, r *http.Request
 	}
 
 	conn.SetReadLimit(524288000)
-
+	unit := world.AddUnit()
 	client := &Client{
 		hub:  hub,
 		conn: conn,
 		send: make(chan []byte, 256),
+		id:   unit.ID,
 	}
 
 	client.hub.register <- client
-
-	unit := world.AddUnit()
 
 	ctx := context.Background()
 	err = wsjson.Write(ctx, conn, game.Event{

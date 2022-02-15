@@ -2,6 +2,7 @@ package game
 
 import (
 	"encoding/json"
+	"fmt"
 	"image/color"
 )
 
@@ -148,10 +149,11 @@ func (world *World) HandleEvent(event *Event) {
 
 	case EventTypeDisconnect:
 		str, _ := json.Marshal(event.Data)
-		var ev EventConnect
+		var ev EventDisconnect
 		json.Unmarshal(str, &ev)
-
+		fmt.Println("before deleting", world.Units, ev.ID)
 		delete(world.Units, ev.ID)
+		fmt.Println("after deleting", world.Units)
 		for clr := range world.Colors {
 			if world.Colors[clr] == ev.ID {
 				world.Colors[clr] = 0
@@ -166,7 +168,6 @@ func (world *World) HandleEvent(event *Event) {
 				}
 			}
 		}
-
 	case EventTypeFillCell:
 		str, _ := json.Marshal(event.Data)
 		var ev EventFillCell

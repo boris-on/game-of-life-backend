@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"image/color"
 	"os"
+	"time"
 
 	"github.com/boris-on/game-of-life-backend/game"
 	"github.com/boris-on/game-of-life-backend/server"
@@ -40,5 +42,13 @@ func main() {
 	if port == "" {
 		port = "3000"
 	}
+
+	go func() {
+		for {
+			time.Sleep(1 * time.Second)
+			fmt.Println(world.Units)
+		}
+	}()
+
 	r.Run(":" + port)
 }
