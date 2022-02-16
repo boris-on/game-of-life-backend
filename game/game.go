@@ -2,7 +2,6 @@ package game
 
 import (
 	"encoding/json"
-	"fmt"
 	"image/color"
 )
 
@@ -17,14 +16,6 @@ type World struct {
 	UnitCount int                `json:"unit_count"`
 	MyID      int                `json:"myid"`
 	IsServer  bool               `json:"iserver"`
-	// colors := []color.Color{
-	// 	color.RGBA{0, 0, 255, 0},
-	// 	color.RGBA{0, 255, 0, 0},
-	// 	color.RGBA{0, 255, 255, 0},
-	// 	color.RGBA{255, 0, 0, 0},
-	// 	color.RGBA{255, 0, 255, 0},
-	// 	color.RGBA{255, 255, 0, 0},
-	// }
 }
 
 type Units map[int]*Unit
@@ -151,9 +142,9 @@ func (world *World) HandleEvent(event *Event) {
 		str, _ := json.Marshal(event.Data)
 		var ev EventDisconnect
 		json.Unmarshal(str, &ev)
-		fmt.Println("before deleting", world.Units, ev.ID)
+
 		delete(world.Units, ev.ID)
-		fmt.Println("after deleting", world.Units)
+
 		for clr := range world.Colors {
 			if world.Colors[clr] == ev.ID {
 				world.Colors[clr] = 0

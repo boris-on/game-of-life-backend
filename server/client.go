@@ -40,7 +40,6 @@ type Client struct {
 
 func (c *Client) readPump(world *game.World) {
 	defer func() {
-		fmt.Println("deleting", c.id)
 		msg, err := json.Marshal(game.Event{
 			Type: game.EventTypeDisconnect,
 			Data: game.EventDisconnect{
@@ -57,11 +56,11 @@ func (c *Client) readPump(world *game.World) {
 				ID: c.id,
 			},
 		})
-		fmt.Println(c.hub.clients)
+
 		c.hub.broadcast <- msg
 		c.hub.unregister <- c
 		c.conn.Close(websocket.StatusNormalClosure, "")
-		fmt.Println(c.hub.clients)
+
 	}()
 
 	// c.conn.SetReadLimit(maxMessageSize)
