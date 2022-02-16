@@ -78,7 +78,7 @@ func (c *Client) readPump(world *game.World) {
 
 		var event game.Event
 		json.Unmarshal(msg, &event)
-		fmt.Println(event)
+		// fmt.Println(event)
 		world.HandleEvent(&event)
 	}
 }

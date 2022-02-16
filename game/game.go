@@ -3,6 +3,7 @@ package game
 import (
 	"encoding/json"
 	"image/color"
+	"log"
 )
 
 type World struct {
@@ -115,7 +116,7 @@ func (world *World) UpdateCells() {
 }
 
 func (world *World) HandleEvent(event *Event) {
-
+	log.Panicln(event)
 	switch event.Type {
 	case EventTypeInit:
 		str, _ := json.Marshal(event.Data)
