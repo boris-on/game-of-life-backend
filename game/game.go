@@ -116,7 +116,7 @@ func (world *World) UpdateCells() {
 }
 
 func (world *World) HandleEvent(event *Event) {
-	log.Panicln(event)
+	log.Println(event)
 	switch event.Type {
 	case EventTypeInit:
 		str, _ := json.Marshal(event.Data)
