@@ -74,11 +74,11 @@ func (c *Client) readPump(world *game.World) {
 		}
 
 		msg = bytes.TrimSpace(bytes.Replace(msg, newline, space, -1))
-		fmt.Println(msg)
 		c.hub.broadcast <- msg
 
 		var event game.Event
 		json.Unmarshal(msg, &event)
+		fmt.Println(event)
 		world.HandleEvent(&event)
 	}
 }
