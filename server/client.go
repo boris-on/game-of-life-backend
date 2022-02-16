@@ -72,8 +72,9 @@ func (c *Client) readPump(world *game.World) {
 			log.Println(err)
 			break
 		}
-		fmt.Println(msg)
+
 		msg = bytes.TrimSpace(bytes.Replace(msg, newline, space, -1))
+		fmt.Println(msg)
 		c.hub.broadcast <- msg
 
 		var event game.Event
