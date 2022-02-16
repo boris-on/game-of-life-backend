@@ -119,11 +119,11 @@ func (c *Client) writePump() {
 				return
 			}
 		case <-ticker.C:
-			return
-			// if err := c.conn.Write(ctx, websocket.MessageBinary, nil); err != nil {
-			// 	fmt.Println(err)
-			// 	return
-			// }
+			// return
+			if err := c.conn.Write(ctx, websocket.MessageBinary, nil); err != nil {
+				fmt.Println(err)
+				return
+			}
 		}
 	}
 
