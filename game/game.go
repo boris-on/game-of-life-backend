@@ -2,6 +2,7 @@ package game
 
 import (
 	"encoding/json"
+	"fmt"
 	"image/color"
 	"log"
 )
@@ -170,6 +171,8 @@ func (world *World) HandleEvent(event *Event) {
 			world.Area[ev.Y+1][ev.X] = ev.ID
 			world.Area[ev.Y-1][ev.X] = ev.ID
 			world.Area[ev.Y-1][ev.X+1] = ev.ID
+		} else {
+			fmt.Println("bad pos")
 		}
 	}
 }
