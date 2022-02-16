@@ -164,11 +164,13 @@ func (world *World) HandleEvent(event *Event) {
 		str, _ := json.Marshal(event.Data)
 		var ev EventFillCell
 		json.Unmarshal(str, &ev)
-		world.Area[ev.Y][ev.X] = ev.ID
-		world.Area[ev.Y][ev.X-1] = ev.ID
-		world.Area[ev.Y+1][ev.X] = ev.ID
-		world.Area[ev.Y-1][ev.X] = ev.ID
-		world.Area[ev.Y-1][ev.X+1] = ev.ID
+		if ev.Y > 1 && ev.Y < world.Height-1 && ev.X > 1 && ev.X < world.Width {
+			world.Area[ev.Y][ev.X] = ev.ID
+			world.Area[ev.Y][ev.X-1] = ev.ID
+			world.Area[ev.Y+1][ev.X] = ev.ID
+			world.Area[ev.Y-1][ev.X] = ev.ID
+			world.Area[ev.Y-1][ev.X+1] = ev.ID
+		}
 	}
 }
 
