@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"image/color"
 	"os"
 
@@ -51,4 +52,5 @@ func main() {
 	}
 
 	r.Run(":" + port)
+	fmt.Println("starting on port", port)
 }

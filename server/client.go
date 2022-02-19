@@ -35,7 +35,8 @@ type Client struct {
 
 	send chan []byte
 
-	id int
+	id   int
+	nick string
 }
 
 func (c *Client) readPump(world *game.World) {
@@ -133,18 +134,22 @@ func ServeWs(hub *Hub, world *game.World, w http.ResponseWriter, r *http.Request
 		InsecureSkipVerify: true,
 	})
 
+	params := r.URL.Query()
+	nick := params.Get("nick")
+
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
 	conn.SetReadLimit(524288000)
-	unit := world.AddUnit()
+	unit := world.AddUnit(nick)
 	client := &Client{
 		hub:  hub,
 		conn: conn,
 		send: make(chan []byte, 256),
 		id:   unit.ID,
+		nick: unit.Nick,
 	}
 
 	client.hub.register <- client

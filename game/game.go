@@ -24,6 +24,7 @@ type Units map[int]*Unit
 type Unit struct {
 	ID    int        `json:"id"`
 	Color color.RGBA `json:"color"`
+	Nick  string     `json:"nick"`
 }
 
 type Event struct {
@@ -174,7 +175,7 @@ func (world *World) HandleEvent(event *Event) {
 	}
 }
 
-func (world *World) AddUnit() *Unit {
+func (world *World) AddUnit(nick string) *Unit {
 
 	unitId := world.UnitCount + 1
 	var unitColor color.RGBA
@@ -190,6 +191,7 @@ func (world *World) AddUnit() *Unit {
 	unit := &Unit{
 		ID:    unitId,
 		Color: unitColor,
+		Nick:  nick,
 	}
 
 	world.Units[unitId] = unit
